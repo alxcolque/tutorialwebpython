@@ -4,6 +4,6 @@ class MainController():
         pass
 
     def index(self):
-        #user = {'name': 'Tupaj Katali'}
-        return render_template('index.html')
+        user1 = {'name': 'Tupaj','surname':'Martinez'}
+        return render_template('index.html', user=user1)
 maincontroller = MainController()
