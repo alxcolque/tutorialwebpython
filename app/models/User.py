@@ -9,6 +9,6 @@ class User(db.Model):
     username = db.Column(db.String(50),unique=True)
     password = db.Column(db.String(50))
     #relationship
-    project = db.relationship(
+    """ project = db.relationship(
         "Project",
-        back_populates="users")
+        back_populates="users") """

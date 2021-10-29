@@ -24,3 +24,6 @@ app.debug = True
 
 from app.routes.main_router import main_router
 app.register_blueprint(main_router)
+
+from app.routes.category_router import category_router
+app.register_blueprint(category_router)
