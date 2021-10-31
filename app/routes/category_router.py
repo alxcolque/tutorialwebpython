@@ -14,3 +14,7 @@ def create():
 @category_router.route('/categories/store',methods=['POST'])
 def store():
     return categorycontroller.store()
+
+@category_router.route('/categories/<int:id>/delete',methods=['GET'])
+def delete(id):
+    return categorycontroller.delete(id)

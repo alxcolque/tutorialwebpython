@@ -18,5 +18,11 @@ class CategoryController():
             db.session.commit()
             flash('El registro se ha realizado con éxito.')
             return redirect(url_for('category_router.index'))
+    def delete(self, _id):
+        category = Category.query.get(_id)
+        db.session.delete(category)
+        db.session.commit()
+        flash('El registro se ha eliminado con éxito.')
+        return redirect(url_for('category_router.index'))
             
 categorycontroller = CategoryController()
