@@ -6,8 +6,8 @@ class CategoryController():
         pass
 
     def index1(self):
-        #users = User.query.all()
-        return render_template('categories/index.html')
+        categories = Category.query.all()
+        return render_template('categories/index.html',categories=categories)
     def create(self):
         return render_template('categories/create.html')
     def store(self):

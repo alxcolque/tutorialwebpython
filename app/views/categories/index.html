@@ -6,15 +6,15 @@
   <div class="row py-lg-5">
     <div class="col-lg-6 col-md-8 mx-auto">
       {% with messages = get_flashed_messages() %}
-        {% if messages %}
-          {% for message in messages %}
-          <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Hey!</strong> {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Hey!</strong> {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
 
-          {% endfor%}
-        {% endif %}
+      {% endfor%}
+      {% endif %}
       {% endwith%}
       <h1 class="fw-light">Categorias</h1>
       <p class="lead text-muted">Inicio de Categorias</p>
@@ -29,7 +29,9 @@
     <div class="col-lg-12 mx-auto">
       <div class="card">
         <div class="card-body">
-          <div class="shadow p-3 mb-5 bg-body rounded">Regular shadow</div>
+          {% for data in categories %}
+          <div class="shadow p-3 mb-5 bg-body rounded">{{data.category}}</div>
+          {% endfor %}
         </div>
       </div>
     </div>
