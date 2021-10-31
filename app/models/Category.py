@@ -4,4 +4,4 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     category = db.Column(db.String(70))
     #relationship one to many
-    project = db.relationship("Project", back_populates="categories")
+    #project = db.relationship("Project", back_populates="categories")

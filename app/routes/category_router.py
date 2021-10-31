@@ -10,3 +10,7 @@ def index():
 @category_router.route('/categories/create',methods=['GET'])
 def create():
     return categorycontroller.create()
+
+@category_router.route('/categories/store',methods=['POST'])
+def store():
+    return categorycontroller.store()
