@@ -18,3 +18,11 @@ def store():
 @category_router.route('/categories/<int:id>/delete',methods=['GET'])
 def delete(id):
     return categorycontroller.delete(id)
+
+@category_router.route('/categories/<int:id>/edit',methods=['GET'])
+def edit(id):
+    return categorycontroller.edit(id)
+
+@category_router.route('/categories/<int:id>/update',methods=['POST'])
+def update(id):
+    return categorycontroller.update(id)

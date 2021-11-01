@@ -24,5 +24,16 @@ class CategoryController():
         db.session.commit()
         flash('El registro se ha eliminado con éxito.')
         return redirect(url_for('category_router.index'))
+    def edit(self, _id):
+        category = Category.query.get(_id)
+        return render_template('categories/edit.html',category=category)
+    def update(self, _id):
+        if request.method == 'POST':
+            categoryV = request.form['category']
+            categoryDB = Category.query.get(_id)
+            categoryDB.category = categoryV
+            db.session.commit()
+            flash('El registro se ha actualizado con éxito.')
+            return redirect(url_for('category_router.index'))
             
 categorycontroller = CategoryController()
