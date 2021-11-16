@@ -9,6 +9,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(50),unique=True)
     username = db.Column(db.String(50),unique=True)
     password = db.Column(db.String(100))
+    picture_profile = db.Column(db.String(150), nullable=True)
     #relationship
     """ project = db.relationship(
         "Project",

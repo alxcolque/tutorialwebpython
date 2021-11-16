@@ -20,7 +20,9 @@ class AuthController():
             email = request.form['email']
             username = request.form['username']
             password = bycrypt.generate_password_hash(request.form['password'])
-            user = User(name=name, email=email, username=username, password=password)
+            picture_profile = 'user.png'
+
+            user = User(name=name, email=email, username=username, password=password, picture_profile=picture_profile)
             db.session.add(user)
             db.session.commit()
             flash('Usuario registrado exitosamente')

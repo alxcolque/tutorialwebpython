@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 import secrets
 
-UPLOAD_FOLDER = 'app/static/img/uploads/'
+UPLOAD_FOLDER = 'app/static/uploads/'
 #app = Flask('app')
 
 app = Flask(__name__, template_folder="views")
@@ -32,3 +32,6 @@ app.register_blueprint(main_router)
 
 from app.routes.category_router import category_router
 app.register_blueprint(category_router)
+
+from app.routes.profile_router import profile_router
+app.register_blueprint(profile_router)
