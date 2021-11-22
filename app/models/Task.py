@@ -5,8 +5,8 @@ class SubTask(db.Model):
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'), primary_key=True)
     description = db.Column(db.String(250))
     status_progress = db.Column(db.String(20))
-    task = db.relationship("Task", back_populates="projects")
-    project = db.relationship("Project", back_populates="tasks")
+    #task = db.relationship("Task", back_populates="projects")
+    #project = db.relationship("Project", back_populates="tasks")
 
 class Task(db.Model):
     __tablename__ = 'tasks'
@@ -14,4 +14,4 @@ class Task(db.Model):
     task = db.Column(db.String(50))
     date_begin = db.Column(db.Date)
     date_end = db.Column(db.Date)
-    project = db.relationship("Project", back_populates="tasks")
+    #project = db.relationship("Project", back_populates="tasks")

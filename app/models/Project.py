@@ -13,10 +13,7 @@ class Project(db.Model):
     status = db.Column(db.String(20))
     #relationship foreign
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
-    category = db.relationship("Category", back_populates="projects")
-    user = db.relationship(
-        "User",
-        secondary=team_projects,
-        back_populates="projects")
-    task = db.relationship("Task", back_populates="projects")
+    #category = db.relationship("Category", back_populates="projects")
+    #user = db.relationship( "User",secondary=team_projects,back_populates="projects")
+    #task = db.relationship("Task", back_populates="projects")
 
