@@ -9,8 +9,6 @@ class TaskController():
     def index(self):
         tasks = Task.query.all()#Practica.query.join(Materia).filter().all()
         return render_template('tasks/index.html',tasks=tasks)
-    def create(self):
-        return render_template('categories/create.html')
     def store(self):
         if request.method == 'POST':
             task = request.form['task']

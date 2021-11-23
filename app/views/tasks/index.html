@@ -143,7 +143,7 @@
             var task = $('#task').val();
             var date_begin = $('#date_begin').val();
             var date_end = $('#date_end').val();
-            e.preventDefault();
+            e.preventDefault(); //ayuda a estar activo ala modal sin que se cierre o actualice la página
             $.ajax({
                 url: "/tasksstore",
                 type: 'POST',

@@ -6,11 +6,7 @@ task_router = Blueprint('task_router', __name__)
 @task_router.route('/tasks',methods=['GET'])
 def index():
     return taskcontroller.index()
-
-@task_router.route('/tasks/create',methods=['GET'])
-def create():
-    return taskcontroller.create()
-
+    
 @task_router.route('/tasksstore',methods=['POST'])
 def store():
     return taskcontroller.store()
