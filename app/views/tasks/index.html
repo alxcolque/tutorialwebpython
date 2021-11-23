@@ -1,0 +1,195 @@
+{% extends 'layouts/app.html' %}
+
+<!-- Inicio bloque body -->
+{% block body %}
+<section class="py-5 text-center container">
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Hey!</strong> {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            {% endfor%}
+            {% endif %}
+            {% endwith%}
+            <h1 class="fw-light">Tareas</h1>
+            <p class="lead text-muted">Inicio de Tareas</p>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskModal">
+                Nueva Tarea
+            </button>
+        </div>
+    </div>
+</section>
+<section class="container">
+    <div class="row">
+        <div class="col-lg-12 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <table id="mytable" class="display nowrap" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Tareas</th>
+                                <th scope="col">Fecha Inicio</th>
+                                <th scope="col">Fecha Final</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in tasks %}
+                            <tr>
+                                <td>{{row.id}}</td>
+                                <td>{{row.task}}</td>
+                                <td>{{row.date_begin}}</td>
+                                <td>{{row.date_end}}</td>
+                                <td>
+                                    <a href="{{url_for('task_router.delete', id = row.id)}}"
+                                        class="btn btn-danger btn-sm "><i class="fa fa-trash"></i></a>
+                                    <a href="{{url_for('task_router.edit', id = row.id)}}"
+                                        class="btn btn-dark btn-sm "><i class="fa fa-edit"></i></a>
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Modal tasks-->
+<div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nueva Tarea</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="frmTask" class="needs-validation" novalidate>
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <label for="task" class="form-label">Tarea</label>
+                        <input type="text" class="form-control" id="task" required>
+                        <div class="valid-feedback">
+                            Los datos son requeridos.
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="date_begin" class="form-label">Fecha Inicio</label>
+                        <input type="date" class="form-control" id="date_begin" required>
+                        <div class="valid-feedback">
+                            Los datos son requeridos.
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="date_end" class="form-label">Fecha Final</label>
+                        <input type="date" class="form-control" id="date_end" required>
+                        <div class="valid-feedback">
+                            Los datos son requeridos.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" id="btnStoreTask" class="btn btn-primary">Guargar cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+<!-- Fin bloque body -->
+
+{% block css%}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+
+{% endblock %}
+<!-- Fin bloque estilos -->
+
+{% block js%}
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var table = $('#mytable').DataTable({
+            rowReorder: {
+                selector: 'td:nth-child(2)'
+            },
+            responsive: true
+        });
+    });
+</script>
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+      'use strict'
+  
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      var forms = document.querySelectorAll('.needs-validation')
+  
+      // Loop over them and prevent submission
+      Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+          form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
+  
+            form.classList.add('was-validated')
+          }, false)
+        })
+    })()
+  </script>
+  <script>
+      $(document).ready(function () {
+        $('#btnStoreTask').click(function (e) {
+            for (const el of document.getElementById('frmTask').querySelectorAll("[required]")) {
+                if (!el.reportValidity()) {
+                    return;
+                }
+            }
+
+            var task = $('#task').val();
+            var date_begin = $('#date_begin').val();
+            var date_end = $('#date_end').val();
+            e.preventDefault(); //ayuda a estar activo ala modal sin que se cierre o actualice la página
+            $.ajax({
+                url: "/tasks/store",
+                type: 'POST',
+                data: {
+                    //'_token': $('meta[name="csrf-token"]').attr('content'),
+                    'task': task,
+                    'date_begin': date_begin,
+                    'date_end': date_end,
+                },
+                success: function (data) {
+                    /* var json = $.parseJSON(
+                        data); */ // create an object with the key of the array
+                    console.log('Todo salió bien');
+                    $('#taskModal').modal('hide');
+                    window.location.reload(true);
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('error');
+                }
+            });
+        });
+
+    });
+  </script>
+{% endblock %}
+<!-- Fin bloque scripts -->

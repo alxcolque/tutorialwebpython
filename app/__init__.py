@@ -35,3 +35,6 @@ app.register_blueprint(category_router)
 
 from app.routes.profile_router import profile_router
 app.register_blueprint(profile_router)
+
+from app.routes.task_router import task_router
+app.register_blueprint(task_router)
