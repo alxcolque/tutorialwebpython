@@ -13,12 +13,14 @@ class TaskController():
         return render_template('categories/create.html')
     def store(self):
         if request.method == 'POST':
-            category = request.form['category']
-            categoryadd = Task(category = category)
-            db.session.add(categoryadd)
+            task = request.form['task']
+            date_begin = request.form['date_begin']
+            date_end = request.form['date_end']
+            taskadd = Task(task=task, date_begin=date_begin, date_end=date_end)
+            db.session.add(taskadd)
             db.session.commit()
-            flash('El registro se ha realizado con éxito.')
-            return redirect(url_for('category_router.index'))
+            #flash('El registro se ha realizado con éxito.')
+            return redirect(url_for('task_router.index'))
     def delete(self, _id):
         category = Task.query.get(_id)
         db.session.delete(category)

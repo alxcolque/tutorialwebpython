@@ -11,7 +11,7 @@ def index():
 def create():
     return taskcontroller.create()
 
-@task_router.route('/tasks/store',methods=['POST'])
+@task_router.route('/tasksstore',methods=['POST'])
 def store():
     return taskcontroller.store()
 

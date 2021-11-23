@@ -4,6 +4,9 @@
 {% block body %}
 <div class="container">
     <h1 class="mt-5">Tareas</h1>
+    <div>
+        <button id="btnNew" class="btn btn-success btn-sm">Nuevo</button>
+    </div>
     <table id="mytable" class="display nowrap" style="width:100%">
         <thead>
             <tr>
@@ -22,13 +25,58 @@
                 <td>{{row.date_begin}}</td>
                 <td>{{row.date_end}}</td>
                 <td>
-                    <button data-id="{{row.id}}" id="btnEdit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
+                    <button data-id="{{row.id}}" id="btnEdit" class="btn btn-primary btn-sm"><i
+                            class="fa fa-edit"></i></button>
+                    <button data-id="{{row.id}}" id="btnDelete" class="btn btn-danger btn-sm"><i
+                            class="fa fa-trash"></i></button>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
+</div>
+<!-- My Modal new task -->
+<!-- Modal -->
+<div class="modal fade" id="taskModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="taskModalLabel">Nueva Tarea</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="frmTask" class="needs-validation" novalidate>
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <label for="task" class="form-label">Tarea</label>
+                        <input type="text" class="form-control" id="task" required>
+                        <div class="valid-feedback">
+                            Los datos son requeridos.
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="date_begin" class="form-label">Fecha Inicio</label>
+                        <input type="date" class="form-control" id="date_begin" required>
+                        <div class="valid-feedback">
+                            Los datos son requeridos.
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="date_end" class="form-label">Fecha Final</label>
+                        <input type="date" class="form-control" id="date_end" required>
+                        <div class="valid-feedback">
+                            Los datos son requeridos.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" id="btnStoreTask" class="btn btn-primary">Guardar cambios</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
 </div>
 
 {% endblock %}
@@ -46,6 +94,28 @@
 <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    (function () {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
 <script>
     $(document).ready(function () {
         var table = $('#mytable').DataTable({
@@ -54,11 +124,54 @@
             },
             responsive: true
         });
-        //Button 
-        $('#btnEdit').click(function(){
+        //New Button
+        $('#btnNew').click(function () {
+            $('#taskModal').modal('show');
+        });
+        //edit Button 
+        $('#btnEdit').click(function () {
             var id = $(this).data('id');
             alert(id);
         });
+        $('#btnStoreTask').click(function (e) {
+            for (const el of document.getElementById('frmTask').querySelectorAll("[required]")) {
+                if (!el.reportValidity()) {
+                    return;
+                }
+            }
+
+            var task = $('#task').val();
+            var date_begin = $('#date_begin').val();
+            var date_end = $('#date_end').val();
+            e.preventDefault();
+            $.ajax({
+                url: "/tasksstore",
+                type: 'POST',
+                data: {
+                    '_token': $('meta[name="csrf-token"]').attr('content'),
+                    'task': task,
+                    'date_begin': date_begin,
+                    'date_end': date_end,
+                },
+                success: function (data) {
+                    /* var json = $.parseJSON(
+                        data); */ // create an object with the key of the array
+                    console.log('Todo salió bien');
+                    $('#taskModal').modal('hide');
+                    window.location.reload(true);
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Algo salió mal al registrar la tarea!',
+                        footer: '<a href="#">¿Por qué tengo este problema?</a>'
+                    })
+                }
+            });
+        });
+
     });
 </script>
 {% endblock %}
