@@ -5,6 +5,9 @@ task_router = Blueprint('task_router', __name__)
 
 @task_router.route('/tasks',methods=['GET'])
 def index():
+    return taskcontroller.index()
+@task_router.route('/tasks1',methods=['GET'])
+def index1():
     return taskcontroller.index1()
 
 @task_router.route('/tasks/store',methods=['POST'])
@@ -22,3 +25,8 @@ def edit(id):
 @task_router.route('/tasks/<int:id>/update',methods=['POST'])
 def update(id):
     return taskcontroller.update(id)
+
+#print
+@task_router.route('/convertpdf',methods=['GET'])
+def convertpdf():
+    return taskcontroller.convertpdf()

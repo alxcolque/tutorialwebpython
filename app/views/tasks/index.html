@@ -16,7 +16,7 @@
             {% endfor%}
             {% endif %}
             {% endwith%}
-            <h1 class="fw-light">Tareas</h1>
+            <h1 style="color: red;">Tareas</h1>
             <p class="lead text-muted">Inicio de Tareas</p>
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskModal">
@@ -58,6 +58,7 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                    <a href="/convertpdf" class="btn btn-danger btn-sm"> Imprimir</a>
                 </div>
             </div>
         </div>
