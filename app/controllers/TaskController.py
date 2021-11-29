@@ -1,8 +1,9 @@
-from flask import render_template, url_for, request, redirect, flash, make_response
+from flask import render_template, url_for, request, redirect, flash
+import app
 from app.models.Task import Task
 from app import db, app
 import pdfkit
-import os
+
 app.config['PDF_FOLDER'] = 'app/static/pdf/'
 app.config['TEMPLATE_FOLDER'] = 'app/views/tasks/'
 URL_INDEX_TO_PRINT = 'http://127.0.0.1:5001/tasks'
@@ -49,6 +50,58 @@ class TaskController():
             db.session.commit()
             flash('El registro se ha actualizado con éxito.')
             return redirect(url_for('category_router.index'))
+    
+    def convertpdf(self):
+        config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
+        #htmlfile = 'http://127.0.0.1:5001/tasks'
+        #htmlfile = app.config['TEMPLATE_FOLDER'] + 'index.html'
+        tasks = Task.query.all()
+        sumtotal = 2345453
+        header = '''
+        
+            <header>
+                <div style="width: 70%; float: left;">
+                    <address contenteditable style="background: yellowgreen;">
+                        <p>Alec COL</p>
+                        <p>101 E. Chapman Ave<br>Orange, CA 92866</p>
+                        <p>(591) 6-555-1234</p>
+                    </address>
+                </div>
+                <div style="width: 30%; float: right; background: white;">
+                    <img style="float: right;;"
+                        src="https://www.pinclipart.com/picdir/big/487-4874977_we-seamlessly-become-the-voice-of-your-company.png"
+                        alt="" height="140">
+                </div>
+            </header>
+        '''
+        body = render_template('tasks/index1.html', tasks=tasks, sumtotal=sumtotal)
+        
+        footer= '''<p>Soy pie de la página</p>'''
+        htmlfile = header+body+footer
+        #htmlfile = "<img src='https://conceptodefinicion.de/wp-content/uploads/2014/05/Imagen-2.jpg'>"
+        
+        pdffile = app.config['PDF_FOLDER'] + 'demo.pdf'
+        options={
+                'page-size': 'Letter',
+                'margin-top': '0.75in',
+                'margin-right': '0.75in',
+                'margin-bottom': '0.75in',
+                'margin-left': '0.75in',
+                'encoding': "UTF-8",
+                'custom-header': [
+                    ('Accept-Encoding', 'gzip')
+                ],
+            }
+        #css = 'app/static/css/style.css'
+        try:
+            #pdfkit.from_url(htmlfile, pdffile, configuration=config, options=options)
+            #pdfkit.from_file(htmlfile, pdffile,configuration=config, options=options)
+            pdfkit.from_string(htmlfile, pdffile,configuration=config, options=options)
+            return '''Click para abrir el archivo generado <a href="http://127.0.0.1:5001/static/pdf/demo.pdf">pdf</a>.'''
+        except OSError as e:
+            if 'Done' not in str(e):
+                raise e
+
             
     def convertpdf(self):
         config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
