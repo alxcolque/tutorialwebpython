@@ -1,0 +1,45 @@
+<!-- <header>
+    <div style="width: 70%; float: left;">
+        <address contenteditable style="background: yellowgreen;">
+            <p>Alec COL</p>
+            <p>101 E. Chapman Ave<br>Orange, CA 92866</p>
+            <p>(591) 6-555-1234</p>
+        </address>
+    </div>
+    <div style="width: 30%; float: right; background: white;">
+        <img style="float: right;;"
+            src="https://www.pinclipart.com/picdir/big/487-4874977_we-seamlessly-become-the-voice-of-your-company.png"
+            alt="" height="140">
+    </div>
+</header> -->
+<section>
+    <hr>
+    <div style="color: brown; text-align: center; width: 100%;">
+        <h1 >Tabla de tareas</h1>
+    </div>
+    
+    <div style="display: flex; justify-content: center;">
+        <table border="1" style="width:60%;">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tareas</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Final</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in tasks %}
+                <tr>
+                    <td>{{row.id}}</td>
+                    <td>{{row.task}}</td>
+                    <td>{{row.date_begin}}</td>
+                    <td>{{row.date_end}}</td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h4>{{sumtotal}}</h4>
+    </div>
+</section>

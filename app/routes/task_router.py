@@ -22,3 +22,8 @@ def edit(id):
 @task_router.route('/tasks/<int:id>/update',methods=['POST'])
 def update(id):
     return taskcontroller.update(id)
+
+#print
+@task_router.route('/convertpdf',methods=['GET'])
+def convertpdf():
+    return taskcontroller.convertpdf()
