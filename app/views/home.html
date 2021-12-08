@@ -1,0 +1,49 @@
+{% extends 'layouts/app.html' %}
+
+<!-- Inicio bloque body -->
+{% block body %}
+<div class="container">
+    <h1 class="mt-5">Bienvenido Usuario</h1>
+    <!-- <table id="mytable" class="display nowrap" style="width:100%">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Email</th>
+            <th scope="col">Usuario</th>
+          </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+      </table> -->
+
+</div>
+
+{% endblock %}
+<!-- Fin bloque body -->
+
+{% block css%}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+
+{% endblock %}
+<!-- Fin bloque estilos -->
+
+{% block js%}
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script>
+    $(document).ready(function() {
+    var table = $('#mytable').DataTable( {
+        rowReorder: {
+            selector: 'td:nth-child(2)'
+        },
+        responsive: true
+    } );
+} );
+</script>
+{% endblock %}
+<!-- Fin bloque scripts -->

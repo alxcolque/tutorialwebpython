@@ -13,7 +13,7 @@ class TaskController():
     def __init__(self):
         pass
 
-    def index1(self):
+    def index(self):
         tasks = Task.query.all()
         return render_template('tasks/index.html',tasks=tasks)
     def store(self):
