@@ -27,13 +27,40 @@
 <section class="container">
   <div class="row">
     <div class="col-lg-12 mx-auto">
+      <div class="card-body">
+        <div class="col-lg-12">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" class="checkbox select-all">{{ ('SELECCIONAR TODO') }}
+            </label>
+          </div>
+          <hr />
+          <ul class="detectul list-unstyled row">
+            {% for row in categories %}
+            <li class="listitems col-sm-12">
+              <div class="checkbox">
+                <label>
+                  <input name="check[]" type="checkbox" class="checkbox" value="{{ row.id }}">
+                  &nbsp;{{ row.category }}
+                </label>
+              </div>
+            </li>
+
+            {% endfor %}
+          </ul>
+        </div>
+        <button type="button" onclick="sumSel()" class="btn btn-primary">Procesar</button>
+      </div>
+
       <div class="card">
         <div class="card-body">
           {% for data in categories %}
           <div class="shadow p-3 mb-5 bg-body rounded">
             {{data.category}}
-            <a href="{{url_for('category_router.delete', id = data.id)}}" class="btn btn-danger btn-sm "><i class="fa fa-trash"></i></a>
-            <a href="{{url_for('category_router.edit', id = data.id)}}" class="btn btn-dark btn-sm "><i class="fa fa-edit"></i></a>
+            <a href="{{url_for('category_router.delete', id = data.id)}}" class="btn btn-danger btn-sm "><i
+                class="fa fa-trash"></i></a>
+            <a href="{{url_for('category_router.edit', id = data.id)}}" class="btn btn-dark btn-sm "><i
+                class="fa fa-edit"></i></a>
           </div>
           {% endfor %}
         </div>
@@ -52,8 +79,51 @@
 <!-- Fin bloque estilos -->
 
 {% block js%}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    //alert("hello");
+  //process multiple invoices
+  $(document).on('change', '.select-all', function () {
+    if ($(this).is(':checked')) {
+      $('[name="check[]"]').each(function () {
+        $(this).prop('checked', true);
+      });
+    } else {
+      $('[name="check[]"]').each(function () {
+        $(this).prop('checked', false);
+      });
+    }
+  });
+  ///
+  function sumSel() {
+    var array = []
+    var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
+    for (var i = 0; i < checkboxes.length; i++) {
+      array.push(checkboxes[i].value)
+    }
+    if (array[0] == 'on' && array.length == 1 || array.length == 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'No hay selección',
+      });
+    } else {
+      if (array[0] == 'on') {
+        array.shift();
+
+      }
+
+      //sumar elementos de arrar
+      var sum = 0;
+      for (var i = 0; i < array.length; i++) {
+        sum = sum + parseInt(array[i]);
+      }
+      Swal.fire(
+        'Procesado!',
+        'La Suma es: ' + sum,
+        'success'
+      )
+    }
+  }
 </script>
 {% endblock %}
 <!-- Fin bloque scripts -->
